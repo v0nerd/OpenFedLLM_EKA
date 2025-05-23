@@ -1,5 +1,5 @@
-import random
 import torch
+import secrets
 
 def get_clients_this_round(fed_args, round):
     if (fed_args.fed_alg).startswith('local'):
@@ -8,8 +8,8 @@ def get_clients_this_round(fed_args, round):
         if fed_args.num_clients < fed_args.sample_clients:
             clients_this_round = list(range(fed_args.num_clients))
         else:
-            random.seed(round)
-            clients_this_round = sorted(random.sample(range(fed_args.num_clients), fed_args.sample_clients))
+            secrets.SystemRandom().seed(round)
+            clients_this_round = sorted(secrets.SystemRandom().sample(range(fed_args.num_clients), fed_args.sample_clients))
     return clients_this_round
 
 def global_aggregate(fed_args, global_dict, local_dict_list, sample_num_list, clients_this_round, round_idx, proxy_dict=None, opt_proxy_dict=None, auxiliary_info=None):
